@@ -57,7 +57,7 @@ const someBuilder = <T>(t: T): Option<T> => ({
 	unwrap: (): T => t,
 	expect: <A>(_: A): T => t,
 	unwrapOr: (_: T): T => t,
-	flatten: (): Option<T> => isSome(t as Option<T>) || isNone(t as Option<T>) ? t as Option<T> : Some(t),
+	flatten: (): Option<T> => isSome(t as unknown as Option<T>) || isNone(t as unknown as Option<T>) ? t as unknown as Option<T> : Some(t),
 	or <A>(_: Option<A>): Some<T> { return this },
 	and: <A>(a: Option<A>): Option<A> => a, 
 	toPromise(): Promise<T> {
