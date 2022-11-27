@@ -1,4 +1,4 @@
-import { Some, None, isNone, isSome, Option } from '../src';
+import { Some, None, isNone, isSome, Option, flatten } from '../src';
 
 const optCube = (x: number): Option<number> => Some(x * x * x);
 const optDouble = (x: number): Option<number> => Some(x * x);
@@ -108,16 +108,12 @@ describe('Option', () => {
 
     it('flattens', () => {
       expect(
-        Some(Some(10))
-          .flatten()
-          .unwrap()
+        flatten(Some(Some(Some(Some(Some(Some(Some(10)))))))).unwrap()
       ).toEqual(10);
-      expect(Some(None).flatten()).toEqual(None);
-      expect(
-        Some('some1')
-          .flatten()
-          .unwrap()
-      ).toEqual('some1');
+      expect(flatten(Some(Some(None)))).toEqual(None);
+      expect(flatten(Some('some1')).unwrap()).toEqual('some1');
+      expect(flatten('string').unwrap()).toEqual('string');
+      expect(flatten(None)).toEqual(None);
     });
 
     it('expects', () => {

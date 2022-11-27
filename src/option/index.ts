@@ -5,7 +5,6 @@ interface OptionType<T> {
   unwrap(): T | never;
   expect<A>(_: A): A | T;
   unwrapOr(_: T): T;
-  flatten(): Option<T>;
   or<A>(_: Option<A>): Option<T | A>;
   and<A>(_: Option<A>): Option<A>;
   toPromise(): Promise<T>;
@@ -43,7 +42,6 @@ const noneBuilder = <T>(): None<T> => ({
     throw new Error(`${a}`);
   },
   unwrapOr: (a: T): T => a,
-  flatten: (): None<T> => None,
   or: <A>(a: Option<A>): Option<A> => a,
   and: <A>(_: Option<A>): None<A> => None,
   toPromise(): Promise<T> {
@@ -61,10 +59,6 @@ const someBuilder = <T>(t: T): Option<T> => ({
   unwrap: (): T => t,
   expect: <A>(_: A): T => t,
   unwrapOr: (_: T): T => t,
-  flatten: (): Option<T> =>
-    isSome((t as unknown) as Option<T>) || isNone((t as unknown) as Option<T>)
-      ? ((t as unknown) as Option<T>)
-      : Some(t),
   or<A>(_: Option<A>): Some<T> {
     return this;
   },
@@ -83,3 +77,12 @@ export const match = <T, A, B>(t: Option<T>) => ({
   some: onSome,
   none: onNone,
 }: Match<T, A, B>): A | B => (isNone(t) ? onNone() : onSome(t.value));
+export const flatten = <T>(t: T): Option<T> => {
+  if (isNone((t as unknown) as Option<T>)) {
+    return None;
+  }
+  if (isSome((t as unknown) as Option<T>)) {
+    return flatten(((t as unknown) as Option<T>).unwrap());
+  }
+  return Some(t);
+};
