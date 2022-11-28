@@ -57,7 +57,6 @@ export const Err = <T, E>(e: E): Err<T, E> => ({
   expectErr: <A>(_: A): E => e,
 });
 
-
 export const isOk = <T, E>(a: Result<T, E>): a is Ok<T, E> => a._tag === 'Ok';
 export const isErr = <T, E>(a: Result<T, E>): a is Err<T, E> =>
   a._tag === 'Err';

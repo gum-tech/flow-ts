@@ -105,7 +105,6 @@ describe('Option', () => {
       expect(None.unwrapOr('Car')).toEqual('Car');
       expect(None.unwrapOr({ x: 1, y: 2 })).toEqual({ x: 1, y: 2 });
     });
-    
 
     it('flattens', () => {
       expect(
