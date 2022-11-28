@@ -51,7 +51,7 @@ describe('Option', () => {
       expect(isNone(Some(2).map(x => divide(x, 0)))).toEqual(true);
       expect(isNone(Some(2).map(x => divide(x, 0)))).toEqual(true);
     });
-    it('gets or', () => {
+    it('or', () => {
       expect(
         Some('Some1')
           .or(Some('Some2'))
@@ -65,7 +65,7 @@ describe('Option', () => {
       expect(None.or(Some('Some1')).unwrap()).toEqual('Some1');
       expect(isNone(None.or(None))).toEqual(true);
     });
-    it('gets and', () => {
+    it('and', () => {
       expect(
         Some('Some1')
           .and(Some('Some2'))

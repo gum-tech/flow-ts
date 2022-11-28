@@ -8,7 +8,11 @@ describe('Result', () => {
           .bind(x => Ok(x * 2))
           .unwrap()
       ).toEqual(4);
-      expect(isErr(Err('message').bind(e => Ok(e)))).toEqual(true);
+      expect(
+        Err('message')
+          .bind(e => Ok(e))
+          .unwrapErr()
+      ).toEqual('message');
     });
     it('maps', () => {
       expect(
@@ -36,6 +40,50 @@ describe('Result', () => {
           .mapErr(e => e.length)
           .unwrapErr()
       ).toEqual(20);
+    });
+    it('or', () => {
+      expect(
+        Ok('ok1')
+          .or(Ok('ok2'))
+          .unwrap()
+      ).toEqual('ok1');
+      expect(
+        Ok('ok1')
+          .or(Err('error1'))
+          .unwrap()
+      ).toEqual('ok1');
+      expect(
+        Err('error1')
+          .or(Ok('ok1'))
+          .unwrap()
+      ).toEqual('ok1');
+      expect(
+        Err('error1')
+          .or(Err('error2'))
+          .unwrapErr()
+      ).toEqual('error2');
+    });
+    it('and', () => {
+      expect(
+        Ok('ok1')
+          .and(Ok('ok2'))
+          .unwrap()
+      ).toEqual('ok2');
+      expect(
+        Ok('ok1')
+          .and(Err('error1'))
+          .unwrapErr()
+      ).toEqual('error1');
+      expect(
+        Err('error1')
+          .and(Ok('ok1'))
+          .unwrapErr()
+      ).toEqual('error1');
+      expect(
+        Err('error1')
+          .and(Err('error2'))
+          .unwrapErr()
+      ).toEqual('error1');
     });
   });
   describe('constructors', () => {

@@ -12,6 +12,8 @@ interface ResultType<T, E> {
   bind<A>(_: (_: T) => Result<A, E>): Result<A, E>;
   map<A>(_: (_: T) => A): Result<A, E>;
   mapErr<A>(_: (_: E) => A): Result<T, A>;
+  or<A>(_: Result<A, E>): Result<T | A, E>;
+  and<A>(_: Result<A, E>): Result<T | A, E>;
 }
 
 interface Err<T, E> extends ResultType<T, E> {
@@ -26,7 +28,7 @@ interface Ok<T, E> extends ResultType<T, E> {
 
 export type Result<T, E> = Ok<T, E> | Err<T, E>;
 
-export const Ok = <T, E = never>(t: T): Result<T, E> => ({
+export const Ok = <T, E>(t: T): Result<T, E> => ({
   _tag: 'Ok',
   value: t,
   ok: (): Option<T> => Some(t),
@@ -44,6 +46,10 @@ export const Ok = <T, E = never>(t: T): Result<T, E> => ({
   map: <A>(fn: (_: T) => A): Result<A, E> => Ok(fn(t)),
   mapErr: <A>(_: (_: E) => A): Result<T, A> => Ok(t),
   bind: <A>(fn: (_: T) => Result<A, E>): Result<A, E> => fn(t),
+  or<A>(_: Result<A, E>): Ok<T | A, E> {
+    return this;
+  },
+  and: <A>(a: Result<A, E>): Result<A, E> => a,
 });
 
 export const Err = <T, E>(e: E): Err<T, E> => ({
@@ -64,6 +70,10 @@ export const Err = <T, E>(e: E): Err<T, E> => ({
   map: <A>(_: (_: T) => A): Err<A, E> => Err(e),
   mapErr: <A>(fn: (_: E) => A): Result<T, A> => Err(fn(e)),
   bind: <A>(_: (_: T) => Err<A, E>): Err<A, E> => Err(e),
+  or: <A>(a: Result<A, E>): Result<A, E> => a,
+  and<A>(_: Result<A, E>): Err<T | A, E> {
+    return this;
+  },
 });
 
 export const isOk = <T, E>(a: Result<T, E>): a is Ok<T, E> => a._tag === 'Ok';
