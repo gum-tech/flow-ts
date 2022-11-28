@@ -7,6 +7,7 @@ interface OptionType<T> {
   unwrapOr(_: T): T;
   unwrapOrElse(_: () => T): T;
   or<A>(_: Option<A>): Option<T | A>;
+  orElse(_: () => Option<T>): Option<T>;
   and<A>(_: Option<A>): Option<A>;
   toPromise(): Promise<T>;
 }
@@ -45,6 +46,7 @@ const noneBuilder = <T>(): None<T> => ({
   unwrapOr: (a: T): T => a,
   unwrapOrElse: (fn: () => T): T => fn(),
   or: <A>(a: Option<A>): Option<A> => a,
+  orElse: (fn: () => Option<T>): Option<T> => fn(),
   and: <A>(_: Option<A>): None<A> => None,
   toPromise(): Promise<T> {
     return Promise.reject();
@@ -63,6 +65,9 @@ const someBuilder = <T>(t: T): Option<T> => ({
   unwrapOr: (_: T): T => t,
   unwrapOrElse: (_: () => T): T => t,
   or<A>(_: Option<A>): Some<T> {
+    return this;
+  },
+  orElse(_: () => Option<T>): Some<T> {
     return this;
   },
   and: <A>(a: Option<A>): Option<A> => a,

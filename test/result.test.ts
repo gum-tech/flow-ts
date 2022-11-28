@@ -85,6 +85,28 @@ describe('Result', () => {
           .unwrapErr()
       ).toEqual('error1');
     });
+    it('orElse', () => {
+      expect(
+        Ok('ok1')
+          .orElse(() => Ok('ok2'))
+          .unwrap()
+      ).toEqual('ok1');
+      expect(
+        Ok('ok1')
+          .orElse(() => Err('error2'))
+          .unwrap()
+      ).toEqual('ok1');
+      expect(
+        Err('error1')
+          .orElse(() => Ok('ok2'))
+          .unwrap()
+      ).toEqual('ok2');
+      expect(
+        Err('error1')
+          .orElse(() => Err('error2'))
+          .unwrapErr()
+      ).toEqual('error2');
+    });
   });
   describe('constructors', () => {
     it('isOk', () => {

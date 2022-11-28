@@ -13,6 +13,7 @@ interface ResultType<T, E> {
   map<A>(_: (_: T) => A): Result<A, E>;
   mapErr<A>(_: (_: E) => A): Result<T, A>;
   or<A>(_: Result<A, E>): Result<T | A, E>;
+  orElse<A>(_: (_: E) => Result<A, E>): Result<T | A, E>;
   and<A>(_: Result<A, E>): Result<T | A, E>;
 }
 
@@ -49,6 +50,9 @@ export const Ok = <T, E>(t: T): Result<T, E> => ({
   or<A>(_: Result<A, E>): Ok<T | A, E> {
     return this;
   },
+  orElse<A>(_: (_: E) => Result<A, E>): Ok<T | A, E> {
+    return this;
+  },
   and: <A>(a: Result<A, E>): Result<A, E> => a,
 });
 
@@ -71,6 +75,7 @@ export const Err = <T, E>(e: E): Err<T, E> => ({
   mapErr: <A>(fn: (_: E) => A): Result<T, A> => Err(fn(e)),
   bind: <A>(_: (_: T) => Err<A, E>): Err<A, E> => Err(e),
   or: <A>(a: Result<A, E>): Result<A, E> => a,
+  orElse: <A>(fn: (_: E) => Result<A, E>): Result<T | A, E> => fn(e),
   and<A>(_: Result<A, E>): Err<T | A, E> {
     return this;
   },

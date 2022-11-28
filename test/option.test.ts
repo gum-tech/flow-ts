@@ -85,6 +85,20 @@ describe('Option', () => {
       ).toEqual(6);
       expect(isNone(None.filter(isEven))).toEqual(true);
     });
+    it('orElse', () => {
+      expect(
+        Some('some1')
+          .orElse(() => Some('some2'))
+          .unwrap()
+      ).toEqual('some1');
+      expect(
+        Some('some1')
+          .orElse(() => None)
+          .unwrap()
+      ).toEqual('some1');
+      expect(None.orElse(() => Some('some2')).unwrap()).toEqual('some2');
+      expect(isNone(None.orElse(() => None))).toEqual(true);
+    });
   });
 
   describe('contructors', () => {
