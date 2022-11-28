@@ -24,12 +24,12 @@ describe('Option', () => {
     });
     it('binds and switch tracks', () => {
       expect(
-        isSome(
+        isNone(
           Some(2)
             .bind(x => optDivide(x, 0))
             .bind(optCube)
         )
-      ).toEqual(false);
+      ).toEqual(true);
       expect(
         isSome(
           Some(2)
@@ -48,8 +48,8 @@ describe('Option', () => {
       expect(isNone(None.map(double).map(cube))).toEqual(true);
     });
     it('maps and switch tracks', () => {
-      expect(isSome(Some(2).map(x => divide(x, 0)))).toEqual(false);
-      expect(isSome(Some(2).map(x => divide(x, 0)))).toEqual(false);
+      expect(isNone(Some(2).map(x => divide(x, 0)))).toEqual(true);
+      expect(isNone(Some(2).map(x => divide(x, 0)))).toEqual(true);
     });
     it('gets or', () => {
       expect(
@@ -63,7 +63,7 @@ describe('Option', () => {
           .unwrap()
       ).toEqual('Some1');
       expect(None.or(Some('Some1')).unwrap()).toEqual('Some1');
-      expect(None.or(None)).toEqual(None);
+      expect(isNone(None.or(None))).toEqual(true);
     });
     it('gets and', () => {
       expect(
@@ -71,19 +71,19 @@ describe('Option', () => {
           .and(Some('Some2'))
           .unwrap()
       ).toEqual('Some2');
-      expect(Some('Some1').and(None)).toEqual(None);
-      expect(None.and(Some('Some1'))).toEqual(None);
-      expect(None.and(None)).toEqual(None);
+      expect(isNone(Some('Some1').and(None))).toEqual(true);
+      expect(isNone(None.and(Some('Some1')))).toEqual(true);
+      expect(isNone(None.and(None))).toEqual(true);
     });
 
     it('filters', () => {
-      expect(Some(3).filter(isEven)).toEqual(None);
+      expect(isNone(Some(3).filter(isEven))).toEqual(true);
       expect(
         Some(6)
           .filter(isEven)
           .unwrap()
       ).toEqual(6);
-      expect(None.filter(isEven)).toEqual(None);
+      expect(isNone(None.filter(isEven))).toEqual(true);
     });
   });
 
@@ -105,15 +105,16 @@ describe('Option', () => {
       expect(None.unwrapOr('Car')).toEqual('Car');
       expect(None.unwrapOr({ x: 1, y: 2 })).toEqual({ x: 1, y: 2 });
     });
+    
 
     it('flattens', () => {
       expect(
         flatten(Some(Some(Some(Some(Some(Some(Some(10)))))))).unwrap()
       ).toEqual(10);
-      expect(flatten(Some(Some(None)))).toEqual(None);
+      expect(isNone(flatten(Some(Some(None))))).toEqual(true);
       expect(flatten(Some('some1')).unwrap()).toEqual('some1');
       expect(flatten('string').unwrap()).toEqual('string');
-      expect(flatten(None)).toEqual(None);
+      expect(isNone(flatten(None))).toEqual(true);
     });
 
     it('expects', () => {
