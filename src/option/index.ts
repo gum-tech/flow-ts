@@ -5,6 +5,7 @@ interface OptionType<T> {
   unwrap(): T | never;
   expect<A>(_: A): A | T;
   unwrapOr(_: T): T;
+  unwrapOrElse(_: () => T): T;
   or<A>(_: Option<A>): Option<T | A>;
   and<A>(_: Option<A>): Option<A>;
   toPromise(): Promise<T>;
@@ -42,6 +43,7 @@ const noneBuilder = <T>(): None<T> => ({
     throw new Error(`${a}`);
   },
   unwrapOr: (a: T): T => a,
+  unwrapOrElse: (fn: () => T): T => fn(),
   or: <A>(a: Option<A>): Option<A> => a,
   and: <A>(_: Option<A>): None<A> => None,
   toPromise(): Promise<T> {
@@ -59,6 +61,7 @@ const someBuilder = <T>(t: T): Option<T> => ({
   unwrap: (): T => t,
   expect: <A>(_: A): T => t,
   unwrapOr: (_: T): T => t,
+  unwrapOrElse: (_: () => T): T => t,
   or<A>(_: Option<A>): Some<T> {
     return this;
   },

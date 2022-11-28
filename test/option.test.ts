@@ -106,6 +106,13 @@ describe('Option', () => {
       expect(None.unwrapOr({ x: 1, y: 2 })).toEqual({ x: 1, y: 2 });
     });
 
+    it('unwrapOrElse', () => {
+      expect(Some(2).unwrapOrElse(() => 16)).toEqual(2);
+      expect(None.unwrapOrElse(() => 'error returned')).toEqual(
+        'error returned'
+      );
+    });
+
     it('flattens', () => {
       expect(
         flatten(Some(Some(Some(Some(Some(Some(Some(10)))))))).unwrap()
