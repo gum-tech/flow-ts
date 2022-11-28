@@ -1,6 +1,43 @@
 import { Ok, Err, isOk, isErr, isSome } from '../src';
 
 describe('Result', () => {
+  describe('combinators', () => {
+    it('binds', () => {
+      expect(
+        Ok(2)
+          .bind(x => Ok(x * 2))
+          .unwrap()
+      ).toEqual(4);
+      expect(isErr(Err('message').bind(e => Ok(e)))).toEqual(true);
+    });
+    it('maps', () => {
+      expect(
+        Ok(2)
+          .map(x => x * 2)
+          .map(x => x * x * x)
+          .unwrap()
+      ).toEqual(64);
+      expect(
+        Err('error')
+          .map(e => `map reached ${e}`)
+          .unwrapErr()
+      ).toEqual('error');
+    });
+
+    it('mapErr', () => {
+      expect(
+        Ok('abcde')
+          .mapErr(e => `map reached ${e}`)
+          .unwrap()
+      ).toEqual('abcde');
+      expect(
+        Err('error')
+          .mapErr(e => `mapErr reached ${e}`)
+          .mapErr(e => e.length)
+          .unwrapErr()
+      ).toEqual(20);
+    });
+  });
   describe('constructors', () => {
     it('isOk', () => {
       expect(isOk(Ok(10))).toEqual(true);
