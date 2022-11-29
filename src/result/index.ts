@@ -17,12 +17,12 @@ interface ResultType<T, E> {
   and<A>(_: Result<A, E>): Result<T | A, E>;
 }
 
-interface Err<T, E> extends ResultType<T, E> {
+export interface Err<T, E> extends ResultType<T, E> {
   readonly _tag: 'Err';
   readonly value: T | E;
 }
 
-interface Ok<T, E> extends ResultType<T, E> {
+export interface Ok<T, E> extends ResultType<T, E> {
   readonly _tag: 'Ok';
   readonly value: T;
 }
