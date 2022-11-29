@@ -131,10 +131,9 @@ describe('Option', () => {
       expect(
         flatten(Some(Some(Some(Some(Some(Some(Some(10)))))))).unwrap()
       ).toEqual(10);
-      expect(isNone(flatten(Some(Some(None))))).toEqual(true);
+      expect(flatten(Some(Some(None)))).toEqual(None);
       expect(flatten(Some('some1')).unwrap()).toEqual('some1');
-      expect(flatten('string').unwrap()).toEqual('string');
-      expect(isNone(flatten(None))).toEqual(true);
+      expect(flatten(None)).toEqual(None);
     });
 
     it('expects', () => {

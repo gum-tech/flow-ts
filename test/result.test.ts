@@ -1,4 +1,4 @@
-import { Ok, Err, isOk, isErr, isSome } from '../src';
+import { Ok, Err, isOk, isErr, isSome, flatten } from '../src';
 
 describe('Result', () => {
   describe('combinators', () => {
@@ -143,6 +143,14 @@ describe('Result', () => {
       expect(Err('message').unwrapOrElse(() => 'error returned')).toEqual(
         'error returned'
       );
+    });
+    it('flattens', () => {
+      expect(flatten(Ok(Ok(Ok(Ok(Ok(Ok(Ok(10)))))))).unwrap()).toEqual(10);
+      expect(flatten(Ok(Ok(Err('error1')))).unwrapOr('error2')).toEqual(
+        'error2'
+      );
+      expect(flatten(Ok('ok1')).unwrap()).toEqual('ok1');
+      expect(flatten(Err('error1')).unwrapOr('error2')).toEqual('error2');
     });
     it('unwrapErr', () => {
       expect(() => Ok(2).unwrapErr()).toThrow(
