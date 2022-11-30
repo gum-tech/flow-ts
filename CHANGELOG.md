@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/gum-tech/kleisi-ts/compare/v1.0.0...v1.1.0) (2022-11-29)
+
+
+### Features
+
+* **flatten:** add flatten op to flatten deeply nested Option and Result ([811f3ce](https://github.com/gum-tech/kleisi-ts/commit/811f3ce8c4267f9716d9375413aee08d459f6d9d))
+
 ## 1.0.0 (2022-11-29)
 
 
