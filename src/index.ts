@@ -1,3 +1,3 @@
-export { isNone, isSome, match, None, Some, Option } from './option';
+export { isNone, isSome, None, Some, Option } from './option';
 export { isErr, isOk, Ok, Err, Result } from './result';
-export { flatten } from './utils';
+export { flatten, match } from './utils';
