@@ -2,7 +2,7 @@ import { Ok, Err, isOk, isErr, isSome, flatten } from '../src';
 
 describe('Result', () => {
   describe('combinators', () => {
-    it('binds', () => {
+    it('bind', () => {
       expect(
         Ok(2)
           .bind(x => Ok(x * 2))
@@ -14,7 +14,7 @@ describe('Result', () => {
           .unwrapErr()
       ).toEqual('message');
     });
-    it('maps', () => {
+    it('map', () => {
       expect(
         Ok(2)
           .map(x => x * 2)
@@ -125,7 +125,7 @@ describe('Result', () => {
       expect(isSome(Ok(10).err())).toEqual(false);
       expect(isSome(Err('message').err())).toEqual(true);
     });
-    it('unwraps', () => {
+    it('unwrap', () => {
       expect(Ok(true).unwrap()).toEqual(true);
       expect(Ok(0).unwrap()).toEqual(0);
       expect(Ok('value').unwrap()).toEqual('value');
@@ -144,13 +144,12 @@ describe('Result', () => {
         'error returned'
       );
     });
-    it('flattens', () => {
+    it('flatten', () => {
       expect(flatten(Ok(Ok(Ok(Ok(Ok(Ok(Ok(10)))))))).unwrap()).toEqual(10);
-      expect(flatten(Ok(Ok(Err('error1')))).unwrapOr('error2')).toEqual(
-        'error2'
-      );
+      expect(flatten(Ok(Ok(Err('error1'))))._tag).toEqual('Err');
       expect(flatten(Ok('ok1')).unwrap()).toEqual('ok1');
       expect(flatten(Err('error1')).unwrapOr('error2')).toEqual('error2');
+      expect(flatten(Err(Ok(1)))._tag).toEqual('Err');
     });
     it('unwrapErr', () => {
       expect(() => Ok(2).unwrapErr()).toThrow(
@@ -159,7 +158,7 @@ describe('Result', () => {
       expect(Err('message').unwrapErr()).toEqual('message');
     });
 
-    it('expects', () => {
+    it('expect', () => {
       expect(Ok(true).expect('Not true')).toEqual(true);
       expect(() => Err('message').expect('error')).toThrow('error');
     });

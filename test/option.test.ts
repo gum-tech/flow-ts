@@ -13,7 +13,7 @@ const isEven = (x: number): boolean => x % 2 === 0;
 
 describe('Option', () => {
   describe('combinators', () => {
-    it('binds', () => {
+    it('bind', () => {
       expect(
         Some(2)
           .bind(optCube)
@@ -38,7 +38,7 @@ describe('Option', () => {
         )
       ).toEqual(true);
     });
-    it('maps', () => {
+    it('map', () => {
       expect(
         Some(2)
           .map(double)
@@ -76,7 +76,7 @@ describe('Option', () => {
       expect(isNone(None.and(None))).toEqual(true);
     });
 
-    it('filters', () => {
+    it('filter', () => {
       expect(isNone(Some(3).filter(isEven))).toEqual(true);
       expect(
         Some(6)
@@ -127,7 +127,7 @@ describe('Option', () => {
       );
     });
 
-    it('flattens', () => {
+    it('flatten', () => {
       expect(
         flatten(Some(Some(Some(Some(Some(Some(Some(10)))))))).unwrap()
       ).toEqual(10);
@@ -136,7 +136,7 @@ describe('Option', () => {
       expect(flatten(None)).toEqual(None);
     });
 
-    it('expects', () => {
+    it('expect', () => {
       expect(Some(true).expect('Not true')).toEqual(true);
       expect(() => None.expect('empty value returned')).toThrow(
         'empty value returned'

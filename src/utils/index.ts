@@ -1,22 +1,24 @@
 import { Option, None } from '../option/index';
 import { Result, Err } from '../result/index';
 
-export const flatten = <A>(
-  t: Option<A> | Result<A, A>
-): Option<A> | Result<A, A> => {
+type Flatten<T, E> = Option<T> | Result<T, E>;
+
+export const flatten = <T, E>(t: Flatten<T, E>): Flatten<T, E> => {
   switch (t._tag) {
     case 'None':
       return None;
     case 'Some':
-      return ((t.unwrap() as unknown) as Option<A>).hasOwnProperty('_tag')
-        ? flatten((t.unwrap() as unknown) as Option<A>)
+      return ((t.unwrap() as unknown) as Option<T>).hasOwnProperty('_tag')
+        ? flatten((t.unwrap() as unknown) as Option<T>)
         : t;
     case 'Ok':
-      return ((t.unwrap() as unknown) as Result<A, A>).hasOwnProperty('_tag')
-        ? flatten((t.unwrap() as unknown) as Result<A, A>)
+      return ((t.unwrap() as unknown) as Result<T, E>).hasOwnProperty('_tag')
+        ? flatten((t.unwrap() as unknown) as Result<T, E>)
         : t;
     case 'Err':
-      return Err(t?.value);
+      return ((t.unwrapErr() as unknown) as Result<T, E>).hasOwnProperty('_tag')
+        ? Err(('Cannot wrap option/result in Err()' as unknown) as E)
+        : t;
     default:
       return t;
   }
