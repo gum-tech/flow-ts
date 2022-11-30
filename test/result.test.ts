@@ -1,4 +1,4 @@
-import { Ok, Err, isOk, isErr, isSome, flatten } from '../src';
+import { Ok, Err, isOk, isErr, isSome, flatten, match } from '../src';
 
 describe('Result', () => {
   describe('combinators', () => {
@@ -107,6 +107,33 @@ describe('Result', () => {
           .unwrapErr()
       ).toEqual('error2');
     });
+    it('match', () => {
+      expect(
+        match(Ok(1))({
+          Ok: a => `Ok returned:${a}`,
+          Err: e => `Err returned:${e}`,
+        })
+      ).toEqual('Ok returned:1');
+      expect(
+        match(Err('message'))({
+          Ok: a => `Ok returned:${a}`,
+          Err: e => `Err returned:${e}`,
+        })
+      ).toEqual('Err returned:message');
+    });
+    expect(
+      match(Ok(1))({
+        Some: a => a,
+        None: () => 'None',
+      })
+    ).toEqual('No match defined for Ok');
+
+    expect(
+      match(Err('message'))({
+        Some: a => a,
+        None: () => 'None',
+      })
+    ).toEqual('No match defined for Err');
   });
   describe('constructors', () => {
     it('isOk', () => {

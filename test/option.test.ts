@@ -1,4 +1,4 @@
-import { Some, None, isNone, isSome, Option, flatten } from '../src';
+import { Some, None, isNone, isSome, Option, flatten, match } from '../src';
 
 const optCube = (x: number): Option<number> => Some(x * x * x);
 const optDouble = (x: number): Option<number> => Some(x * x);
@@ -10,7 +10,6 @@ const double = (x: number): number => x * x;
 const divide = (x: number, y: number): number | undefined =>
   y > 0 ? x / y : undefined;
 const isEven = (x: number): boolean => x % 2 === 0;
-
 describe('Option', () => {
   describe('combinators', () => {
     it('binds', () => {
@@ -98,6 +97,34 @@ describe('Option', () => {
       ).toEqual('some1');
       expect(None.orElse(() => Some('some2')).unwrap()).toEqual('some2');
       expect(isNone(None.orElse(() => None))).toEqual(true);
+    });
+
+    it('match', () => {
+      expect(
+        match(Some(1))({
+          Some: a => a,
+          None: () => "It's a none",
+        })
+      ).toEqual(1);
+      expect(
+        match(None)({
+          Some: a => a,
+          None: () => "It's a none",
+        })
+      ).toEqual("It's a none");
+      expect(
+        match(None)({
+          Ok: a => a,
+          Err: a => a,
+        })
+      ).toEqual('No match defined for None');
+
+      expect(
+        match(Some(1))({
+          Ok: a => a,
+          Err: a => a,
+        })
+      ).toEqual('No match defined for Some');
     });
   });
 

@@ -25,11 +25,6 @@ interface Predicate<A> {
   (a: A): boolean;
 }
 
-interface Match<T, A, B> {
-  some: (_: T) => A;
-  none: () => B;
-}
-
 export type Option<T> = None<T> | Some<T>;
 
 const noneBuilder = <T>(): None<T> => ({
@@ -81,7 +76,3 @@ export const Some = <T>(t?: T | undefined): Option<T> =>
 export const None = noneBuilder<any>();
 export const isSome = <T>(a: Option<T>): a is Some<T> => a._tag === 'Some';
 export const isNone = <T>(a: Option<T>): a is None<T> => a._tag === 'None';
-export const match = <T, A, B>(t: Option<T>) => ({
-  some: onSome,
-  none: onNone,
-}: Match<T, A, B>): A | B => (isNone(t) ? onNone() : onSome(t.value));
