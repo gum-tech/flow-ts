@@ -179,5 +179,13 @@ describe('Option', () => {
       expect(isNone(Some(1))).toEqual(false);
       expect(isNone(None)).toEqual(true);
     });
+    it('okOr', () => {
+      expect(
+        Some('abcde')
+          .okOr('Error message')
+          .unwrap()
+      ).toEqual('abcde');
+      expect(None.okOr('Error message').unwrapErr()).toEqual('Error message');
+    });
   });
 });

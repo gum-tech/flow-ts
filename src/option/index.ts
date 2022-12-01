@@ -1,3 +1,5 @@
+import { Result, Err, Ok } from '../result';
+
 interface OptionType<T> {
   bind<A>(_: (_: T) => Option<A>): Option<A>;
   map<A>(_: (_: T) => A): Option<A>;
@@ -9,7 +11,7 @@ interface OptionType<T> {
   or<A>(_: Option<A>): Option<T | A>;
   orElse(_: () => Option<T>): Option<T>;
   and<A>(_: Option<A>): Option<A>;
-  toPromise(): Promise<T>;
+  okOr<E>(_: E): Result<T, E>;
 }
 
 export interface None<T> extends OptionType<T> {
@@ -43,9 +45,7 @@ const noneBuilder = <T>(): None<T> => ({
   or: <A>(a: Option<A>): Option<A> => a,
   orElse: (fn: () => Option<T>): Option<T> => fn(),
   and: <A>(_: Option<A>): None<A> => None,
-  toPromise(): Promise<T> {
-    return Promise.reject();
-  },
+  okOr: <E>(e: E): Result<T, E> => Err(e),
 });
 
 const someBuilder = <T>(t: T): Option<T> => ({
@@ -66,9 +66,7 @@ const someBuilder = <T>(t: T): Option<T> => ({
     return this;
   },
   and: <A>(a: Option<A>): Option<A> => a,
-  toPromise(): Promise<T> {
-    return Promise.resolve(t);
-  },
+  okOr: <E>(_: E): Result<T, E> => Ok(t),
 });
 
 export const Some = <T>(t?: T | undefined): Option<T> =>
