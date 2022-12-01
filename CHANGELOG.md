@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/gum-tech/kleisi-ts/compare/v1.1.0...v1.2.0) (2022-12-01)
+
+
+### Features
+
+* implement conversion between Option&lt;T&gt; and Result<T,E> ([14654e1](https://github.com/gum-tech/kleisi-ts/commit/14654e16a494120f930abf8f14cf4fc998cc1f41))
+
 ## [1.1.0](https://github.com/gum-tech/kleisi-ts/compare/v1.0.0...v1.1.0) (2022-11-29)
 
 
