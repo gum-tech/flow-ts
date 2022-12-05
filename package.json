@@ -29,7 +29,22 @@
   },
   "name": "flow-ts",
   "author": "Tomiwa Adey",
+  "description": "Type-Safe Errors and Null Values for JS & TypeScript; Inspired by Rust.",
   "module": "dist/flow-ts.esm.js",
+  "keywords": [
+    "typescript",
+    "functional-programming",
+    "monads",
+    "option",
+    "result",
+    "javascript",
+    "js",
+    "node",
+    "node.js",
+    "rust"
+  ],
+  "homepage": "https://github.com/gum-tech/flow-ts",
+  "bugs": "https://github.com/gum-tech/flow-ts/issues",
   "size-limit": [
     {
       "path": "dist/flow-ts.cjs.production.min.js",
