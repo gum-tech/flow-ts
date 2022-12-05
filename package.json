@@ -27,7 +27,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "flow-ts",
+  "name": "@gum-tech/flow-ts",
   "author": "Tomiwa Adey",
   "description": "Type-Safe Errors and Null Values for JS & TypeScript; Inspired by Rust.",
   "module": "dist/flow-ts.esm.js",
