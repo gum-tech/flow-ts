@@ -47,25 +47,25 @@ If you find this package useful, please click the star button *✨*!
 <div id="toc"></div>
 
 ## Table of contents
-- Option
-    - Introduction to Option
-    - Basic usage of Option
-    - Benefits of Option
-    - Option API
-    - Option API documentation
-- Result
-    - Introduction to Result
-    - Basic usage of Resul
-    - Benefits of Result
-    - Result API
-    - Result API documentation
+- Option<T>
+    - [Introduction](#introduction)
+    - [Basic usage](#basic-usage)
+    - [Benefits](#benefits)
+    - [API](#api)
+    - [API documentation](#api-documentation)
+- Result<T,E>
+    - [Introduction](#introduction-1)
+    - [Basic usage](#basic-usage-1)
+    - [Benefits](#benefits-1)
+    - [API](#api-1)
+    - [API documentation](#api-documentation-1)
 - Utils
-    - Flatten
-    - Pattern matching
+    - [Flatten](#flatten)
+    - [Pattern matching](#pattern-matching)
 
-## Option Monad
+## Option<T>
 
-### **Introduction to Option**
+### **Introduction**
 
 “Null has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years.” - Tony Hoare, the inventor of null
 
@@ -254,6 +254,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   3. To improve code reliability: By explicitly handling the absence of a value, you can make your code more reliable and less prone to runtime errors.
   4. To improve code maintainability: Using the option monad can make your code more maintainable, because it encourages a clear and explicit handling of optional values. This can make it easier to modify and extend your code in the future.
   5. To make you write code that is more declarative and less imperative. This can make your code easier to understand and test.
+
 [⬆️  Back to top](#toc)
 
 ### **API**
@@ -536,6 +537,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   ---
   
   If you find this package useful, please click the star button *✨*!
+
   [⬆️  Back to top](#toc)
 
 ## Result<T, E>
@@ -659,6 +661,7 @@ There are several reasons why you might choose to use the result monad in your c
 2. Improved code readability: By using the result monad, it is clear to anyone reading the code that a computation may or may not be successful, and what to do in each case. This can make the code easier to understand and maintain.
 3. Improved code reliability: By using the result monad, it is easier to ensure that errors and exceptions are properly handled and do not result in unexpected behavior or crashes.
 4. Improved code composability: The result monad allows for the chaining of operations, similar to the way that the **`Promise`** type in JavaScript allows for the chaining of asynchronous operations. This can make it easier to build up complex computations from simpler ones.
+
 [⬆️  Back to top](#toc)
 
 ### **API**
