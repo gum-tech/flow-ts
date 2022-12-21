@@ -1,7 +1,7 @@
 Dominate exceptions and missing values in Typescript & Javascript.   
 
 ## What is flow-ts?
-* * *
+
 `flow-ts` is a library for Typescript and JavaScript that aims to safely handle exceptions and missing values, similar to how Rust handles them with its `Option` and `Result` types.
 
 ## Why flow-ts?
