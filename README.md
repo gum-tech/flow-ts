@@ -47,13 +47,13 @@ If you find this package useful, please click the star button *✨*!
 <div id="toc"></div>
 
 ## Table of contents
-- Option<T>
+- `Option<T>`
     - [Introduction](#introduction)
     - [Basic usage](#basic-usage)
     - [Benefits](#benefits)
     - [API](#api)
     - [API documentation](#api-documentation)
-- Result<T,E>
+- `Result<T,E>`
     - [Introduction](#introduction-1)
     - [Basic usage](#basic-usage-1)
     - [Benefits](#benefits-1)
@@ -63,7 +63,7 @@ If you find this package useful, please click the star button *✨*!
     - [Flatten](#flatten)
     - [Pattern matching](#pattern-matching)
 
-## Option<T>
+## `Option<T>`
 
 ### **Introduction**
 
