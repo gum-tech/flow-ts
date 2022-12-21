@@ -44,26 +44,28 @@ Great! Let’s get started.
 
 If you find this package useful, please click the star button *✨*!
 
+<div id="toc"></div>
+
 ## Table of contents
-- Option Monad
-    - Introduction
-    - Basic usage
-    - Benefits
-    - API
-    - API documentation
-- Result Monad
-    - Introduction
-    - Basic usage
-    - Benefits
-    - API
-    - API documentation
+- Option
+    - Introduction to Option
+    - Basic usage of Option
+    - Benefits of Option
+    - Option API
+    - Option API documentation
+- Result
+    - Introduction to Result
+    - Basic usage of Resul
+    - Benefits of Result
+    - Result API
+    - Result API documentation
 - Utils
     - Flatten
     - Pattern matching
 
 ## Option Monad
 
-### **Introduction**
+### **Introduction to Option**
 
 “Null has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years.” - Tony Hoare, the inventor of null
 
@@ -87,7 +89,7 @@ type Option<T> = None | Some<T>
 
 Option monad helps us safely handle missing values in a predictable and composable way without being afraid of the null pointer exception, runtime errors, and unexpected behaviour in our code. 
 
-
+[⬆️  Back to top](#toc)
 
     
 ## **Basic usage**
@@ -241,7 +243,7 @@ Option monad helps us safely handle missing values in a predictable and composab
     None: () => console.log(`Please check your inputs`)
   }
   ```
-
+[⬆️  Back to top](#toc)
 
 ### **Benefits**
     
@@ -252,6 +254,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   3. To improve code reliability: By explicitly handling the absence of a value, you can make your code more reliable and less prone to runtime errors.
   4. To improve code maintainability: Using the option monad can make your code more maintainable, because it encourages a clear and explicit handling of optional values. This can make it easier to modify and extend your code in the future.
   5. To make you write code that is more declarative and less imperative. This can make your code easier to understand and test.
+[⬆️  Back to top](#toc)
 
 ### **API**
     
@@ -289,6 +292,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   } from 'flow-ts'
   ```
   
+[⬆️  Back to top](#toc)
 
 ### **API Documentation**
     
@@ -394,7 +398,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   
   `map` 
   
-  allows for the transformation of the value contained in a **`Some`**instance. 
+  allows for the transformation of the value contained in a **`Some`** instance. 
   
   E.g `Option<T>`to `Option<U>`.
   
@@ -532,7 +536,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   ---
   
   If you find this package useful, please click the star button *✨*!
-  
+  [⬆️  Back to top](#toc)
 
 ## Result<T, E>
 
@@ -554,6 +558,8 @@ Option monad helps us safely handle missing values in a predictable and composab
   ```
   
   The result monad provides a more predictable and structured approach to error handling, which can improve the reliability, readability, performance, and composability of code.
+
+  [⬆️  Back to top](#toc)
     
 ### **Basic usage**
   
@@ -616,13 +622,13 @@ Option monad helps us safely handle missing values in a predictable and composab
   }) // 0
   ```
   
-  In this example, the **`divide`**function returns a result monad representing the result of a division operation. If the denominator is zero, it returns an **`Err`**variant with an error message. If the denominator is non-zero, it returns an **`Ok`**variant holding the result of the division.
+  In this example, the **`divide`** function returns a result monad representing the result of a division operation. If the denominator is zero, it returns an **`Err`** variant with an error message. If the denominator is non-zero, it returns an **`Ok`** variant holding the result of the division.
   
-  The **`addOne`**function takes a number and returns a result monad representing the result of adding one to that number. In this case, it always returns an **`Ok`**variant.
+  The **`addOne`** function takes a number and returns a result monad representing the result of adding one to that number. In this case, it always returns an **`Ok`** variant.
   
   `bind` is used to chain the **`divide`** and **`addOne`** functions together, passing the result of the **`divide`** function as input to the **`addOne`** function. If the **`divide`** function returns an **`Err`** variant, **`andThen`** short-circuits the chain and returns the **`Err`** variant immediately.
   
-  You can also use **`orElse`** to handle any errors that might occur in the computation. If the result monad is an **`Err`**variant, the provided fallback function is called with the error as input and its result is returned.
+  You can also use **`orElse`** to handle any errors that might occur in the computation. If the result monad is an **`Err`** variant, the provided fallback function is called with the error as input and its result is returned.
   
   ```tsx
   function divide(numerator: number, denominator: number): Result<number, string> {
@@ -643,7 +649,8 @@ Option monad helps us safely handle missing values in a predictable and composab
   console.log(compute(10, 2)); // 6
   console.log(compute(10, 0)); // 0
   ```
-    
+[⬆️  Back to top](#toc)
+
 ### **Benefits**
     
 There are several reasons why you might choose to use the result monad in your code:
@@ -652,7 +659,7 @@ There are several reasons why you might choose to use the result monad in your c
 2. Improved code readability: By using the result monad, it is clear to anyone reading the code that a computation may or may not be successful, and what to do in each case. This can make the code easier to understand and maintain.
 3. Improved code reliability: By using the result monad, it is easier to ensure that errors and exceptions are properly handled and do not result in unexpected behavior or crashes.
 4. Improved code composability: The result monad allows for the chaining of operations, similar to the way that the **`Promise`** type in JavaScript allows for the chaining of asynchronous operations. This can make it easier to build up complex computations from simpler ones.
-
+[⬆️  Back to top](#toc)
 
 ### **API**
     
@@ -664,16 +671,17 @@ flow-ts Result exposes the following:
 - `err` transform `Result` type into `Option`type. **`Ok` to `None` and `Err` to `Some`.**
 - `unwrap` extracts the value held by **`Ok`**, or throws an error if it is **`Err`**
 - `unwrapOr` unwraps the value in case of `Ok` or returns the argument value back in case of `Err`.
-- `*unwrapOrElse`* similar to `unwrapOr`. The only difference is, instead of passing a value, you have to pass a closure.
+- `unwrapOrElse` similar to `unwrapOr`. The only difference is, instead of passing a value, you have to pass a closure.
 - `unwrapErr` extracts the error held by **`Err`**, or throws an error if it is **`Ok`**
 - `expect` similar to `unwrap()` but can accept an argument for setting a custom message for the error.
-- expectErr
+- `expectErr` extracts the error held by Err, or throws an error if it is Ok
 - `bind` allows for safe chaining of computations, where the result of one computation is passed as input to another computation. I
 - `map` allows for the transformation of the value held by  **`Ok`**, leaving **`Err`** unchanged
-- `mapErr` **allows for the transformation of the error held by **`Er`**, leaving **`Ok`**  unchanged
+- `mapErr` allows for the transformation of the error held by **`Er`**, leaving **`Ok`**  unchanged
 - `and` when combining two expressions, If both got `Ok`, the value in the second expression returns. If either one got `Err` that value returns immediately.
 - `or` when combining two expressions. If either one got `Ok`, that value returns immediately.
 - `orElse` allows for the handling of errors, by providing a fallback computation to be used in the case of an error
+[⬆️  Back to top](#toc)
 
 ### **API Documentation**
     
@@ -895,6 +903,7 @@ flow-ts Result exposes the following:
   Err('error1').orElse(() => Err('error2')) // Err('error2')
     
   ```
+  [⬆️  Back to top](#toc)
   
 
 ## Utils
@@ -956,3 +965,4 @@ Matching Result:
   }) // 6
   
   ```
+[⬆️  Back to top](#toc)
