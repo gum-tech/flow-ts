@@ -5,7 +5,7 @@ Dominate exceptions and missing values in Typescript & Javascript.
 `flow-ts` is a library for Typescript and JavaScript that aims to safely handle exceptions and missing values, similar to how Rust handles them with its `Option` and `Result` types.
 
 ## Why flow-ts?
-* * *
+
 In JS, `null` represents intentionally missing values, `undefined` represents unintentional missing values, and Exceptions are used for handling errors. 
 
 Rust skips using missing values and exceptions. Mainly to prevent issues and bugs like: 
@@ -23,7 +23,6 @@ Instead, Rust provides two special generic `Option` and `Result` to deal with th
 flow-ts implements the `Option` & `Result` types for Typescript & Javascript.
 
 ## Why should you use flow-ts?
-* * *
 There are already several excellent libraries that implement functional patterns in Typescript. Why flow-ts?  
 
 These libraries are usually general-purpose toolkits aiming to implement all the functional programming patterns and abstractions. flow-ts has a more focused goal. We wanted a library specifically to ~~dominate~~ **safely** handle exceptions and missing values (null, undefined). The same way as it’s implemented in Rust. 
@@ -39,7 +38,6 @@ Convinced?
 Great! Let’s get started.
 
 ## Installation
-* * *
 ```markdown
 > npm install @gum-tech/flow-ts 
 ```
@@ -47,7 +45,6 @@ Great! Let’s get started.
 If you find this package useful, please click the star button *✨*!
 
 ## Table of contents
-* * *
 - Option Monad
     - Introduction
     - Basic usage
@@ -65,7 +62,6 @@ If you find this package useful, please click the star button *✨*!
     - Pattern matching
 
 ## Option Monad
-* * *
 
 ### **Introduction**
 
@@ -539,7 +535,6 @@ Option monad helps us safely handle missing values in a predictable and composab
   
 
 ## Result<T, E>
-* * *
 
 ### **Introduction**
   
@@ -904,7 +899,6 @@ flow-ts Result exposes the following:
 
 ## Utils
 
----
 
 ### Flatten 
 To remove many levels of nesting:
