@@ -207,11 +207,11 @@ Option monad helps us safely handle missing values in a predictable and composab
   
   const sineCubedIncDoubleDivideBy10 = (x: number): Option<number> => 
                                                                     Some(x)
-                                                                    .bind(sine)
-                                                                    .bind(cube)
-                                                                    .bind(inc)
-                                                                    .bind(double)
-                                                                    .bind(divide);
+                                                                    .andthen(sine)
+                                                                    .andthen(cube)
+                                                                    .andthen(inc)
+                                                                    .andthen(double)
+                                                                    .andthen(divide);
   
   match(sineCubedIncDoubleDivideBy10(30))({
     Some: result => console.log(`Result is ${result}`),
@@ -269,7 +269,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   - `unwrapOrElse` similar to `unwrapOr`. The only difference is, instead of passing a value, you have to pass a closure which returns a value with the same data type as `T` in `Option<T>`
   - `okOr` transform `Option` type into `Result`type. **`Some` to `Ok` and `None` to `Err`.** A default error message must be passed as an argument.
   - `map` allows for the transformation of the value contained in a **`Some`**instance. E.g `Option<T>`to `Option<U>`. Only `Some` values are getting changed - no effect to `None`.
-  - `bind`  allows for safe chaining of multiple option monad computations and returns `None`if the option is `None` anywhere on the chain.
+  - `andthen`  allows for safe chaining of multiple option monad computations and returns `None`if the option is `None` anywhere on the chain.
   - `or` when combining two expressions. If either one got `Some`, that value returns immediately.
   - `orElse` Similar to `or`. The only difference is that the second expression should be a closure that returns the same type `T`
   - `and` when combining two expressions, If both got `Some`, the value in the second expression returns. If either one got `None` that value returns immediately.
@@ -284,7 +284,7 @@ Option monad helps us safely handle missing values in a predictable and composab
     expect,
     unwrapOrElse,
     OkOr,
-    bind,
+    andthen,
     or,
     and,
     map,
@@ -416,7 +416,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   Some(10).map(x => x + 1).map(cube).map(y => y * 2) // Some(2662)
   ```
   
-  `bind` 
+  `andthen` 
   
   allows for safe chaining of multiple option monad computations. And returns `None`if the option is `None` anywhere on the chain. 
   
@@ -433,11 +433,11 @@ Option monad helps us safely handle missing values in a predictable and composab
   
   const sineCubedIncDoubleDivideBy10 = (val: number): Option<number> => 
   Some(val)
-  .bind(sine)
-  .bind(cube)
-  .bind(inc)
-  .bind(double)
-  .bind(divide);
+  .andthen(sine)
+  .andthen(cube)
+  .andthen(inc)
+  .andthen(double)
+  .andthen(divide);
   
   match(sineCubedIncDoubleDivideBy10(30))({
     Some: result => console.log(`Result is ${result}`),
@@ -469,8 +469,8 @@ Option monad helps us safely handle missing values in a predictable and composab
   
   const inc = (x) => Some(x + 1)
   
-  Some(5).bind(inc).or(Some(0)) // => Some(6)
-  Some(undefined).bind(inc).or(Some(0)) // => Some(0)
+  Some(5).andthen(inc).or(Some(0)) // => Some(6)
+  Some(undefined).andthen(inc).or(Some(0)) // => Some(0)
   ```
   
   `orElse` 
@@ -608,7 +608,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   
   const addOne = (x: number): Result<number, string> => Ok(x + 1);
   
-  const compute = (numerator: number, denominator: number): number => divide(numerator, denominator).bind(addOne)
+  const compute = (numerator: number, denominator: number): number => divide(numerator, denominator).andthen(addOne)
   
   match(compute(10, 2))({
       Ok: res => console.log(res),
@@ -628,7 +628,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   
   The **`addOne`** function takes a number and returns a result monad representing the result of adding one to that number. In this case, it always returns an **`Ok`** variant.
   
-  `bind` is used to chain the **`divide`** and **`addOne`** functions together, passing the result of the **`divide`** function as input to the **`addOne`** function. If the **`divide`** function returns an **`Err`** variant, **`andThen`** short-circuits the chain and returns the **`Err`** variant immediately.
+  `andthen` is used to chain the **`divide`** and **`addOne`** functions together, passing the result of the **`divide`** function as input to the **`addOne`** function. If the **`divide`** function returns an **`Err`** variant, **`andThen`** short-circuits the chain and returns the **`Err`** variant immediately.
   
   You can also use **`orElse`** to handle any errors that might occur in the computation. If the result monad is an **`Err`** variant, the provided fallback function is called with the error as input and its result is returned.
   
@@ -644,7 +644,7 @@ Option monad helps us safely handle missing values in a predictable and composab
   
   const compute = (numerator: number, denominator: number): number =>
     divide(numerator, denominator)
-      .bind(addOne)
+      .andthen(addOne)
       .orElse((error: string) => Ok(0))
       .unwrap();
   
@@ -678,7 +678,7 @@ flow-ts Result exposes the following:
 - `unwrapErr` extracts the error held by **`Err`**, or throws an error if it is **`Ok`**
 - `expect` similar to `unwrap()` but can accept an argument for setting a custom message for the error.
 - `expectErr` extracts the error held by Err, or throws an error if it is Ok
-- `bind` allows for safe chaining of computations, where the result of one computation is passed as input to another computation. I
+- `andthen` allows for safe chaining of computations, where the result of one computation is passed as input to another computation. I
 - `map` allows for the transformation of the value held by  **`Ok`**, leaving **`Err`** unchanged
 - `mapErr` allows for the transformation of the error held by **`Er`**, leaving **`Ok`**  unchanged
 - `and` when combining two expressions, If both got `Ok`, the value in the second expression returns. If either one got `Err` that value returns immediately.
@@ -822,7 +822,7 @@ flow-ts Result exposes the following:
   Ok('message').expectErr('error') // fails, throw an exception
   ```
   
-  `bind` 
+  `andthen` 
   
   allows for safe chaining of computations, where the result of one computation is passed as input to another computation. 
   
@@ -831,8 +831,8 @@ flow-ts Result exposes the following:
   ```tsx
   import { Ok, Err } from 'flow-ts'
   
-  Ok(2).bind(x => Ok(x * 2)).unwrap() // 4 
-  Err('message').bind(e => Ok(e)).unwrapErr() // message
+  Ok(2).andthen(x => Ok(x * 2)).unwrap() // 4 
+  Err('message').andthen(e => Ok(e)).unwrapErr() // message
   ```
   
   `map` 
@@ -960,7 +960,7 @@ Matching Result:
   
   const addOne = (x: number): Result<number, string> => Ok(x + 1);
   
-  const compute = (numerator: number, denominator: number): number => divide(numerator, denominator).bind(addOne)
+  const compute = (numerator: number, denominator: number): number => divide(numerator, denominator).andthen(addOne)
   
   match(compute(10, 2))({
       Ok: res => console.log(res),

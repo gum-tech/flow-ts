@@ -1,7 +1,7 @@
 import { Result, Err, Ok } from '../result';
 
 interface OptionType<T> {
-  bind<A>(_: (_: T) => Option<A>): Option<A>;
+  andthen<A>(_: (_: T) => Option<A>): Option<A>;
   map<A>(_: (_: T) => A): Option<A>;
   filter(predicate: Predicate<T>): Option<T>;
   unwrap(): T | never;
@@ -31,7 +31,7 @@ export type Option<T> = None<T> | Some<T>;
 
 const noneBuilder = <T>(): None<T> => ({
   _tag: 'None',
-  bind: <A>(_: (_: T) => Option<A>): Option<A> => noneBuilder<A>(),
+  andthen: <A>(_: (_: T) => Option<A>): Option<A> => noneBuilder<A>(),
   map: <A>(_: (_: T) => A): Option<A> => noneBuilder<A>(),
   filter: (_: Predicate<T>): None<T> => None,
   unwrap: (): never => {
@@ -51,7 +51,7 @@ const noneBuilder = <T>(): None<T> => ({
 const someBuilder = <T>(t: T): Option<T> => ({
   _tag: 'Some',
   value: t,
-  bind: <A>(fn: (_: T) => Option<A>): Option<A> => fn(t),
+  andthen: <A>(fn: (_: T) => Option<A>): Option<A> => fn(t),
   map: <A>(fn: (_: T) => A): Option<A> => Some(fn(t)),
   filter: (predicate: Predicate<T>): Option<T> =>
     predicate(t) ? Some(t) : None,
