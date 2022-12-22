@@ -23,7 +23,7 @@
 * **option:** add unwrapOrElse operator for options ([cd624d8](https://github.com/gum-tech/flow-ts/commit/cd624d81240ecbc0bf2eee52db6f464cb9674ad1))
 * **option:** implement map and or combinators for result ([2e46e80](https://github.com/gum-tech/flow-ts/commit/2e46e805abcbb2fd64aee7f6702f00ee3279dc78))
 * **options:** implemented Option monad for handling null/undefined types ([a85ea9f](https://github.com/gum-tech/flow-ts/commit/a85ea9fd0bf2ec0caf66ca3fd10830b81f6f0160))
-* **result:** add map, maoErr and bind combinators to result ([1725dad](https://github.com/gum-tech/flow-ts/commit/1725dad8e5789ddcf4198c6fca927b08d01a00b7))
+* **result:** add map, maoErr and andthen combinators to result ([1725dad](https://github.com/gum-tech/flow-ts/commit/1725dad8e5789ddcf4198c6fca927b08d01a00b7))
 * **result:** add unwrap and expect  operators to Result + tests ([a7db726](https://github.com/gum-tech/flow-ts/commit/a7db72601f5284c65c8bc2e9998e002b46e2055a))
 * **result:** implemented basic version of Result monad for handling exceptions ([ff57f94](https://github.com/gum-tech/flow-ts/commit/ff57f9499915c52f919e490678a2138e10e86e07))
 

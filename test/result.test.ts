@@ -2,15 +2,15 @@ import { Ok, Err, isOk, isErr, isSome, flatten, match } from '../src';
 
 describe('Result', () => {
   describe('combinators', () => {
-    it('binds', () => {
+    it('andthens', () => {
       expect(
         Ok(2)
-          .bind(x => Ok(x * 2))
+          .andthen(x => Ok(x * 2))
           .unwrap()
       ).toEqual(4);
       expect(
         Err('message')
-          .bind(e => Ok(e))
+          .andthen(e => Ok(e))
           .unwrapErr()
       ).toEqual('message');
     });
