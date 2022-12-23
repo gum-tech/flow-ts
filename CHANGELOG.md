@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.0](https://github.com/gum-tech/flow-ts/compare/v1.2.0...v1.3.0) (2022-12-23)
+
+
+### Features
+* change bind to andThen to match Rust's api ([2b652c5](https://github.com/gum-tech/flow-ts/commit/2b652c5e4567c0f521609184d8f791807aa4f1ca))
+
+### Docs
+* write API documentation ([04e2b60](https://github.com/gum-tech/flow-ts/commit/04e2b60022445bd72b1a09e2e85919b70ad8dcf4))
+
 ## [1.2.0](https://github.com/gum-tech/flow-ts/compare/v1.1.0...v1.2.0) (2022-12-01)
 
 
