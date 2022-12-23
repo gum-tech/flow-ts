@@ -969,3 +969,5 @@ Matching Result:
   
   ```
 [⬆️  Back to top](#toc)
+
+If you find this package useful, please click the star button ✨!
