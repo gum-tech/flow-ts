@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/gum-tech/flow-ts/compare/v1.2.0...v1.3.0) (2022-12-23)
+
+
+### Features
+
+* update readme and force a release ([68f0b79](https://github.com/gum-tech/flow-ts/commit/68f0b7989628546b7f33f3eee8942886c1413dcf))
+
 ## [1.2.0](https://github.com/gum-tech/flow-ts/compare/v1.1.0...v1.2.0) (2022-12-01)
 
 
