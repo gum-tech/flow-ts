@@ -3,6 +3,7 @@ import { Result, Err, Ok } from '../result';
 interface OptionType<T> {
   andthen<A>(_: (_: T) => Option<A>): Option<A>;
   map<A>(_: (_: T) => A): Option<A>;
+  mapOr<A>(_: (_: T) => A, defaultValue: A): Option<A>;
   filter(predicate: Predicate<T>): Option<T>;
   unwrap(): T | never;
   expect<A>(_: A): A | T;
@@ -33,6 +34,8 @@ const noneBuilder = <T>(): None<T> => ({
   _tag: 'None',
   andthen: <A>(_: (_: T) => Option<A>): Option<A> => noneBuilder<A>(),
   map: <A>(_: (_: T) => A): Option<A> => noneBuilder<A>(),
+  mapOr: <A>(_: (_: T) => A, defaultValue: A): Option<A> =>
+    defaultValue ? Some(defaultValue) : noneBuilder<A>(),
   filter: (_: Predicate<T>): None<T> => None,
   unwrap: (): never => {
     throw new ReferenceError('`Option.unwrap()` on a `None` value');
@@ -53,6 +56,8 @@ const someBuilder = <T>(t: T): Option<T> => ({
   value: t,
   andthen: <A>(fn: (_: T) => Option<A>): Option<A> => fn(t),
   map: <A>(fn: (_: T) => A): Option<A> => Some(fn(t)),
+  mapOr: <A>(fn: (_: T) => A, defaultValue: A): Option<A> =>
+    isSome(Some(fn(t))) ? Some(fn(t)) : Some(defaultValue),
   filter: (predicate: Predicate<T>): Option<T> =>
     predicate(t) ? Some(t) : None,
   unwrap: (): T => t,
@@ -72,5 +77,6 @@ const someBuilder = <T>(t: T): Option<T> => ({
 export const Some = <T>(t?: T | undefined): Option<T> =>
   typeof t === 'undefined' ? noneBuilder<T>() : someBuilder<T>(t as T);
 export const None = noneBuilder<any>();
-export const isSome = <T>(a: Option<T>): a is Some<T> => a._tag === 'Some';
+export const isSome = <T = any>(a: Option<T>): a is Some<T> =>
+  a._tag === 'Some';
 export const isNone = <T>(a: Option<T>): a is None<T> => a._tag === 'None';
