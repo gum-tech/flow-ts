@@ -100,6 +100,9 @@ describe('Option', () => {
     });
 
     it('match', () => {
+      const z = match(Some(1))({
+        Some: a => a
+      })
       expect(
         match(Some(1))({
           Some: a => a,
