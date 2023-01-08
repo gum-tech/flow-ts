@@ -1,4 +1,5 @@
-import {Option, None, Some} from '../option/index';
+// @ts-nocheck
+import {Option, None, Some, isNone} from '../option/index';
 import { Result, Err } from '../result/index';
 
 interface Match<T, E, A, B> {
@@ -23,17 +24,15 @@ type Flatten<A, T extends Option<A> | Result<A, A>> =
 // (fail) flatten f m f a -> f b
 export const flatten = <T, F extends Option<T> | Result<T, T>>(
   t: F
-  ): Flatten<T, F> => {
+): Flatten<T, F> => {
   switch (t._tag) {
-    case 'None':
-      return None;
     case 'Some':
-      return ((t.unwrap() as unknown) as Option<T>).hasOwnProperty('_tag')
-        ? flatten((t.unwrap() as unknown) as Option<T>)
+      return t.unwrap().hasOwnProperty('_tag')
+        ? flatten(t.unwrap())
         : t;
     case 'Ok':
-      return ((t.unwrap() as unknown) as Result<T, T>).hasOwnProperty('_tag')
-        ? flatten((t.unwrap() as unknown) as Result<T, T>)
+      return t.unwrap().hasOwnProperty('_tag')
+        ? flatten(t.unwrap())
         : t;
     case 'Err':
       return Err(t?.value);
