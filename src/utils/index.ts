@@ -1,6 +1,7 @@
 // @ts-nocheck
 import {Option, None, Some, isNone} from '../option/index';
 import { Result, Err } from '../result/index';
+import {DeepFlatten} from "../types/helpers";
 
 interface Match<T, E, A, B> {
   Some?: (_: T) => A;
@@ -8,17 +9,6 @@ interface Match<T, E, A, B> {
   Ok?: (_: T) => A;
   Err?: (_: E) => B;
 }
-
-type Primitives = number | string | boolean
-
-type DeepFlatten<T, O> =
-  T extends Primitives ?
-      O extends Option<any> ? Option<T> : Result<T, T>
-  : T extends Option<infer I>
-      ? DeepFlatten<I, O>
-  : unknown
-
-type Z = DeepFlatten<Some<number>, Some<number>>
 
 type Flatten<A, T extends Option<A> | Result<A, A>> =
   T extends { _tag: 'Some' } | { _tag: 'None' }
