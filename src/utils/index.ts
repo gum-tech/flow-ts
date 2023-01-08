@@ -9,19 +9,30 @@ interface Match<T, E, A, B> {
   Err?: (_: E) => B;
 }
 
+type Primitives = number | string | boolean
+
+type DeepFlatten<T, O> =
+  T extends Primitives ?
+      O extends Option<any> ? Option<T> : Result<T, T>
+  : T extends Option<infer I>
+      ? DeepFlatten<I, O>
+  : unknown
+
+type Z = DeepFlatten<Some<number>, Some<number>>
+
 type Flatten<A, T extends Option<A> | Result<A, A>> =
   T extends { _tag: 'Some' } | { _tag: 'None' }
-    ? Exclude<T, Result<A, A>>
+    ? DeepFlatten<T, T>
   : T extends { _tag: 'Ok' } | { _tag: 'Err' }
-    ? Exclude<T, Option<A>>
+    ? DeepFlatten<T, T>
   : never
 
 // recursively flattens a nested functors or monads into a single type
 // @examples
-// flatten f a -> f b
-// flatten f f a -> f b
-// flatten f f f a -> f b
-// (fail) flatten f m f a -> f b
+// flatten f a -> f a
+// flatten f f a -> f a
+// flatten f f f a -> f a
+// (fail) flatten f m f a -> f a
 export const flatten = <T, F extends Option<T> | Result<T, T>>(
   t: F
 ): Flatten<T, F> => {
