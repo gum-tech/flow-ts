@@ -10,6 +10,9 @@ export type Primitives =
   | symbol
   | bigint;
 
+// T means the current type in the recursion
+// L means the last type
+// O means the original type
 export type DeepFlattenContainers<T, L, O> = T extends Primitives
   ? L extends { _tag: 'Some' }
     ? Option<T>
