@@ -172,6 +172,7 @@ describe('Result', () => {
       );
     });
     it('flattens', () => {
+      const x = flatten(Ok(Ok(1)))
       expect(flatten(Ok(Ok(Ok(Ok(Ok(Ok(Ok(10)))))))).unwrap()).toEqual(10);
       expect(flatten(Ok(Ok(Err('error1')))).unwrapOr('error2')).toEqual(
         'error2'

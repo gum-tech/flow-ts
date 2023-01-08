@@ -1,4 +1,4 @@
-import { Option, None } from '../option/index';
+import {Option, None, Some} from '../option/index';
 import { Result, Err } from '../result/index';
 
 interface Match<T, E, A, B> {
@@ -8,10 +8,17 @@ interface Match<T, E, A, B> {
   Err?: (_: E) => B;
 }
 
-export const flatten = <A>(
-  t: Option<A> | Result<A, A>
-): Option<A> | Result<A, A> => {
-  switch (t._tag) {
+type Flatten<A, T extends Option<A> | Result<A, A>> =
+  T extends { _tag: 'Some' }
+      ? Exclude<T, Result<A, A>>
+      : Exclude<T, Option<A>>
+
+export const flatten = <T, Functor extends Option<T> | Result<T, T>>(
+  t: Functor
+  ): Flatten<T, Functor> => {
+  return null as any
+  // return (t as unknown) as Some<A>
+  /*switch (t._tag) {
     case 'None':
       return None;
     case 'Some':
@@ -26,7 +33,7 @@ export const flatten = <A>(
       return Err(t?.value);
     default:
       return t;
-  }
+  }*/
 };
 
 export const match = <T, E, A, B>(t: Option<T> | Result<T, E>) => ({
