@@ -9,9 +9,11 @@ interface Match<T, E, A, B> {
 }
 
 type Flatten<A, T extends Option<A> | Result<A, A>> =
-  T extends { _tag: 'Some' }
-      ? Exclude<T, Result<A, A>>
-      : Exclude<T, Option<A>>
+  T extends { _tag: 'Some' } | { _tag: 'None' }
+    ? Exclude<T, Result<A, A>>
+  : T extends { _tag: 'Ok' } | { _tag: 'Err' }
+    ? Exclude<T, Option<A>>
+  : never
 
 export const flatten = <T, Functor extends Option<T> | Result<T, T>>(
   t: Functor
