@@ -1,4 +1,4 @@
-import {Some, None, isNone, isSome, Option, flatten, match, Result} from '../src';
+import { Some, None, isNone, isSome, Option, flatten, match } from '../src';
 
 const optCube = (x: number): Option<number> => Some(x * x * x);
 const optDouble = (x: number): Option<number> => Some(x * x);
@@ -155,7 +155,6 @@ describe('Option', () => {
     });
 
     it('flattens', () => {
-      const z = flatten(Some(Some(1)))
       expect(
         flatten(Some(Some(Some(Some(Some(Some(Some(10)))))))).unwrap()
       ).toEqual(10);

@@ -12,7 +12,7 @@ interface Match<T, E, A, B> {
 
 type Flatten<A, T extends Option<A> | Result<A, A>> =
   T extends { _tag: 'Some' } | { _tag: 'None' } | { _tag: 'Ok' } | { _tag: 'Err' }
-    ? DeepFlattenContainers<T, T>
+    ? DeepFlattenContainers<T, T, T>
   : never
 
 // recursively flattens a nested functors or monads into a single type
