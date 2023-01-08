@@ -15,27 +15,31 @@ type Flatten<A, T extends Option<A> | Result<A, A>> =
     ? Exclude<T, Option<A>>
   : never
 
-export const flatten = <T, Functor extends Option<T> | Result<T, T>>(
-  t: Functor
-  ): Flatten<T, Functor> => {
-  return null as any
-  // return (t as unknown) as Some<A>
-  /*switch (t._tag) {
+// recursively flattens a nested functors or monads into a single type
+// @examples
+// flatten f a -> f b
+// flatten f f a -> f b
+// flatten f f f a -> f b
+// (fail) flatten f m f a -> f b
+export const flatten = <T, F extends Option<T> | Result<T, T>>(
+  t: F
+  ): Flatten<T, F> => {
+  switch (t._tag) {
     case 'None':
       return None;
     case 'Some':
-      return ((t.unwrap() as unknown) as Option<A>).hasOwnProperty('_tag')
-        ? flatten((t.unwrap() as unknown) as Option<A>)
+      return ((t.unwrap() as unknown) as Option<T>).hasOwnProperty('_tag')
+        ? flatten((t.unwrap() as unknown) as Option<T>)
         : t;
     case 'Ok':
-      return ((t.unwrap() as unknown) as Result<A, A>).hasOwnProperty('_tag')
-        ? flatten((t.unwrap() as unknown) as Result<A, A>)
+      return ((t.unwrap() as unknown) as Result<T, T>).hasOwnProperty('_tag')
+        ? flatten((t.unwrap() as unknown) as Result<T, T>)
         : t;
     case 'Err':
       return Err(t?.value);
     default:
       return t;
-  }*/
+  }
 };
 
 export const match = <T, E, A, B>(t: Option<T> | Result<T, E>) => ({
