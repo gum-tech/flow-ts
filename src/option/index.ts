@@ -72,5 +72,5 @@ const someBuilder = <T>(t: T): Option<T> => ({
 export const Some = <T>(t?: T | undefined): Option<T> =>
   typeof t === 'undefined' ? noneBuilder<T>() : someBuilder<T>(t as T);
 export const None = noneBuilder<any>();
-export const isSome = <T>(a: Option<T>): a is Some<T> => a._tag === 'Some';
-export const isNone = <T>(a: Option<T>): a is None<T> => a._tag === 'None';
+export const isSome = <T>(a: any): a is Some<T> => a._tag === 'Some';
+export const isNone = (a: any): a is None<any> => a._tag === 'None';
