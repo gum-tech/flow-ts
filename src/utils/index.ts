@@ -1,7 +1,7 @@
 // @ts-nocheck
-import {Option, None, Some, isNone} from '../option/index';
+import { Option, None, Some } from '../option/index';
 import { Result, Err } from '../result/index';
-import {DeepFlatten} from "../types/helpers";
+import { DeepFlattenContainers } from "../types/helpers";
 
 interface Match<T, E, A, B> {
   Some?: (_: T) => A;
@@ -11,10 +11,8 @@ interface Match<T, E, A, B> {
 }
 
 type Flatten<A, T extends Option<A> | Result<A, A>> =
-  T extends { _tag: 'Some' } | { _tag: 'None' }
-    ? DeepFlatten<T, T>
-  : T extends { _tag: 'Ok' } | { _tag: 'Err' }
-    ? DeepFlatten<T, T>
+  T extends { _tag: 'Some' } | { _tag: 'None' } | { _tag: 'Ok' } | { _tag: 'Err' }
+    ? DeepFlattenContainers<T, T>
   : never
 
 // recursively flattens a nested functors or monads into a single type
