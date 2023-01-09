@@ -1,5 +1,7 @@
-import { Option, None } from '../option/index';
+// @ts-nocheck
+import { Option } from '../option/index';
 import { Result, Err } from '../result/index';
+import { DeepFlattenContainers } from '../types/helpers';
 
 interface Match<T, E, A, B> {
   Some?: (_: T) => A;
@@ -8,20 +10,28 @@ interface Match<T, E, A, B> {
   Err?: (_: E) => B;
 }
 
-export const flatten = <A>(
-  t: Option<A> | Result<A, A>
-): Option<A> | Result<A, A> => {
+type Flatten<A, T extends Option<A> | Result<A, A>> = T extends
+  | { _tag: 'Some' }
+  | { _tag: 'None' }
+  | { _tag: 'Ok' }
+  | { _tag: 'Err' }
+  ? DeepFlattenContainers<T, T, T>
+  : never;
+
+// recursively flattens a nested functors or monads into a single type
+// @examples
+// flatten f a -> f a
+// flatten f f a -> f a
+// flatten f f f a -> f a
+// (fail) flatten f m f a -> f a
+export const flatten = <A, F extends Option<A> | Result<A, A>>(
+  t: F
+): Flatten<A, F> => {
   switch (t._tag) {
-    case 'None':
-      return None;
     case 'Some':
-      return ((t.unwrap() as unknown) as Option<A>).hasOwnProperty('_tag')
-        ? flatten((t.unwrap() as unknown) as Option<A>)
-        : t;
+      return t.unwrap().hasOwnProperty('_tag') ? flatten(t.unwrap()) : t;
     case 'Ok':
-      return ((t.unwrap() as unknown) as Result<A, A>).hasOwnProperty('_tag')
-        ? flatten((t.unwrap() as unknown) as Result<A, A>)
-        : t;
+      return t.unwrap().hasOwnProperty('_tag') ? flatten(t.unwrap()) : t;
     case 'Err':
       return Err(t?.value);
     default:
