@@ -12,28 +12,28 @@ const divide = (x: number, y: number): number | undefined =>
 const isEven = (x: number): boolean => x % 2 === 0;
 describe('Option', () => {
   describe('combinators', () => {
-    it('andthens', () => {
+    it('andThens', () => {
       expect(
         Some(2)
-          .andthen(optCube)
-          .andthen(optDouble)
+          .andThen(optCube)
+          .andThen(optDouble)
           .unwrap()
       ).toEqual(64);
-      expect(isNone(None.andthen(optCube).andthen(optDouble))).toEqual(true);
+      expect(isNone(None.andThen(optCube).andThen(optDouble))).toEqual(true);
     });
-    it('andthens and switch tracks', () => {
+    it('andThens and switch tracks', () => {
       expect(
         isNone(
           Some(2)
-            .andthen(x => optDivide(x, 0))
-            .andthen(optCube)
+            .andThen(x => optDivide(x, 0))
+            .andThen(optCube)
         )
       ).toEqual(true);
       expect(
         isSome(
           Some(2)
-            .andthen(x => optDivide(x, 1))
-            .andthen(optCube)
+            .andThen(x => optDivide(x, 1))
+            .andThen(optCube)
         )
       ).toEqual(true);
     });
