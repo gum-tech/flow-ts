@@ -9,7 +9,7 @@ interface ResultType<T, E> {
   unwrapErr(): E | never;
   expect<A>(_: A): A | T;
   expectErr<A>(_: A): A | E;
-  andthen<A>(_: (_: T) => Result<A, E>): Result<A, E>;
+  andThen<A>(_: (_: T) => Result<A, E>): Result<A, E>;
   map<A>(_: (_: T) => A): Result<A, E>;
   mapErr<A>(_: (_: E) => A): Result<T, A>;
   or<A>(_: Result<A, E>): Result<T | A, E>;
@@ -46,7 +46,7 @@ export const Ok = <T, E>(t: T): Result<T, E> => ({
   },
   map: <A>(fn: (_: T) => A): Result<A, E> => Ok(fn(t)),
   mapErr: <A>(_: (_: E) => A): Result<T, A> => Ok(t),
-  andthen: <A>(fn: (_: T) => Result<A, E>): Result<A, E> => fn(t),
+  andThen: <A>(fn: (_: T) => Result<A, E>): Result<A, E> => fn(t),
   or<A>(_: Result<A, E>): Ok<T | A, E> {
     return this;
   },
@@ -73,7 +73,7 @@ export const Err = <T, E>(e: E): Err<T, E> => ({
   expectErr: <A>(_: A): E => e,
   map: <A>(_: (_: T) => A): Err<A, E> => Err(e),
   mapErr: <A>(fn: (_: E) => A): Result<T, A> => Err(fn(e)),
-  andthen: <A>(_: (_: T) => Err<A, E>): Err<A, E> => Err(e),
+  andThen: <A>(_: (_: T) => Err<A, E>): Err<A, E> => Err(e),
   or: <A>(a: Result<A, E>): Result<A, E> => a,
   orElse: <A>(fn: (_: E) => Result<A, E>): Result<T | A, E> => fn(e),
   and<A>(_: Result<A, E>): Err<T | A, E> {
