@@ -62,6 +62,7 @@ If you find this package useful, please click the star button *✨*!
 - Utils
     - [Flatten](#flatten)
     - [Pattern matching](#pattern-matching)
+    - [Equals](#equals)
 
 ## `Option<T>`
 
@@ -931,6 +932,8 @@ flatten(Err('error1')) // Err('error1')
 ```
 
 ### Pattern matching
+The `match` function is a generic function that allows handling different cases of `Option` and `Result` types.
+It takes an input `t`, which can be either an `Option<T>` or a `Result<T, E>`, and a `matcher` object containing handler functions for each case: `Some`, `None`, `Ok`, and `Err`.
 
 Matching Option:
 ```tsx
@@ -968,6 +971,36 @@ Matching Result:
   }) // 6
 
   ```
+
+### Equals
+The equals function provides a simple and convenient way to compare the equality of two Option or Result instances based on their contents.
+ ```tsx
+  import { Some, None, Option, Result, Ok, Err, equals } from '../src';
+
+  // Example with Option types
+  const someValue1: Option<number> = Some(42);
+  const someValue2: Option<number> = Some(42);
+  const someValue3: Option<number> = Some(7);
+  const noneValue1: Option<number> = None;
+
+  console.log(equals(someValue1, someValue2)); // true
+  console.log(equals(someValue1, someValue3)); // false
+  console.log(equals(someValue1, noneValue1)); // false
+
+  // Example with Result types
+  const okValue1: Result<number, string> = Ok(42);
+  const okValue2: Result<number, string> = Ok(42);
+  const okValue3: Result<number, string> = Ok(7);
+  const errValue1: Result<number, string> = Err('Error message');
+  const errValue2: Result<number, string> = Err('Error message');
+  const errValue3: Result<number, string> = Err('Different error message');
+
+  console.log(equals(okValue1, okValue2)); // true
+  console.log(equals(okValue1, okValue3)); // false
+  console.log(equals(okValue1, errValue1)); // false
+  console.log(equals(errValue1, errValue2)); // true
+  console.log(equals(errValue1, errValue3)); // false
+ ```
 [⬆️  Back to top](#toc)
 
 If you find this package useful, please click the star button ✨!

@@ -10,6 +10,7 @@ const double = (x: number): number => x * x;
 const divide = (x: number, y: number): number | undefined =>
   y > 0 ? x / y : undefined;
 const isEven = (x: number): boolean => x % 2 === 0;
+
 describe('Option', () => {
   describe('combinators', () => {
     it('andThens', () => {

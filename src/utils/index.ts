@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Option } from '../option/index';
 import { Result, Err } from '../result/index';
 import { DeepFlattenContainers } from '../types/helpers';
@@ -117,6 +118,26 @@ export function match<T, E, A, B>(
   }
 }
 
+/**
+
+* Compares two Option or Result instances for equality based on their contents.
+* @param a - The first Option<T> or Result<T, E> instance to compare.
+* @param b - The second Option<T> or Result<T, E> instance to compare.
+* @returns A boolean value indicating whether the two instances are equal or not.
+* @example
+*  const option1 = Some(42);
+*  const option2 = Some(42);
+*  const option3 = Some(7);
+•
+*  const result1 = Ok('Success');
+*  const result2 = Ok('Success');
+*  const result3 = Err('Error');
+•
+*  equals(option1, option2); // true
+*  equals(option1, option3); // false
+*  equals(result1, result2); // true
+*  equals(result1, result3); // false
+*/
 export const equals = <A, E>(
   obj1: Option<A> | Result<A, E>,
   obj2: Option<A> | Result<A, E>
