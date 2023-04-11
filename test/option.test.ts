@@ -101,7 +101,7 @@ describe('Option', () => {
 
     it('match', () => {
       expect(
-        match(Some(1),{
+        match(Some(1), {
           Some: a => a,
           None: () => "It's a none",
         })

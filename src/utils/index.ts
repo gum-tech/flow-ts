@@ -2,7 +2,6 @@ import { Option } from '../option/index';
 import { Result, Err } from '../result/index';
 import { DeepFlattenContainers } from '../types/helpers';
 
-
 type OptionMatcher<T, A, B> = {
   Some?: (_: T) => A;
   None?: () => B;
@@ -11,6 +10,14 @@ type OptionMatcher<T, A, B> = {
 type ResultMatcher<T, E, A, B> = {
   Ok?: (_: T) => A;
   Err?: (_: E) => B;
+};
+
+const isOption = <A>(obj: any): obj is Option<A> => {
+  return obj && (obj._tag === 'Some' || obj._tag === 'None');
+};
+
+const isResult = <A, E>(obj: any): obj is Result<A, E> => {
+  return obj && (obj._tag === 'Ok' || obj._tag === 'Err');
 };
 
 type Flatten<A, T extends Option<A> | Result<A, A>> = T extends
@@ -47,7 +54,6 @@ export const flatten = <A, F extends Option<A> | Result<A, A>>(
   }
 };
 
-
 /**
  * The `match` function is a generic function that allows handling different cases of `Option` and `Result` types.
  * It takes an input `t`, which can be either an `Option<T>` or a `Result<T, E>`, and a `matcher` object containing
@@ -73,19 +79,65 @@ export const flatten = <A, F extends Option<A> | Result<A, A>>(
  *   Err: (error) => `Error: ${error}`,
  * });
  */
-export function match<T, A, B>(t: Option<T>, matcher: OptionMatcher<T, A, B>): A | B | string;
-export function match<T, E, A, B>(t: Result<T, E>, matcher: ResultMatcher<T, E, A, B>): A | B | string;
-export function match<T, E, A, B>(t: Option<T> | Result<T, E>, matcher: OptionMatcher<T, A, B> | ResultMatcher<T, E, A, B>): A | B | string {
+export function match<T, A, B>(
+  t: Option<T>,
+  matcher: OptionMatcher<T, A, B>
+): A | B | string;
+export function match<T, E, A, B>(
+  t: Result<T, E>,
+  matcher: ResultMatcher<T, E, A, B>
+): A | B | string;
+export function match<T, E, A, B>(
+  t: Option<T> | Result<T, E>,
+  matcher: OptionMatcher<T, A, B> | ResultMatcher<T, E, A, B>
+): A | B | string {
   switch (t._tag) {
     case 'None':
-      return (matcher as OptionMatcher<T, A, B>).None?.() ?? 'No match defined for None';
+      return (
+        (matcher as OptionMatcher<T, A, B>).None?.() ??
+        'No match defined for None'
+      );
     case 'Some':
-      return (matcher as OptionMatcher<T, A, B>).Some?.(t.unwrap()) ?? 'No match defined for Some';
+      return (
+        (matcher as OptionMatcher<T, A, B>).Some?.(t.unwrap()) ??
+        'No match defined for Some'
+      );
     case 'Ok':
-      return (matcher as ResultMatcher<T, E, A, B>).Ok?.(t.unwrap()) ?? 'No match defined for Ok';
+      return (
+        (matcher as ResultMatcher<T, E, A, B>).Ok?.(t.unwrap()) ??
+        'No match defined for Ok'
+      );
     case 'Err':
-      return (matcher as ResultMatcher<T, E, A, B>).Err?.(t.unwrapErr()) ?? 'No match defined for Err';
+      return (
+        (matcher as ResultMatcher<T, E, A, B>).Err?.(t.unwrapErr()) ??
+        'No match defined for Err'
+      );
     default:
       return (Err('No pattern matched') as unknown) as B;
   }
 }
+
+export const equals = <A, E>(
+  obj1: Option<A> | Result<A, E>,
+  obj2: Option<A> | Result<A, E>
+): boolean => {
+  if (obj1._tag !== obj2._tag) {
+    return false;
+  }
+
+  if (isOption(obj1) && isOption(obj2)) {
+    if (obj1._tag === 'None') {
+      return obj2._tag === 'None';
+    } else {
+      return Object.is(obj1.unwrap(), obj2.unwrap());
+    }
+  } else if (isResult(obj1) && isResult(obj2)) {
+    if (obj1._tag === 'Err') {
+      return Object.is(obj1.unwrapErr(), obj2.unwrapErr());
+    } else {
+      return Object.is(obj1.unwrap(), obj2.unwrap());
+    }
+  }
+
+  return false;
+};
