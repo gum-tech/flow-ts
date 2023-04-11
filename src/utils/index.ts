@@ -1,14 +1,17 @@
-// @ts-nocheck
 import { Option } from '../option/index';
 import { Result, Err } from '../result/index';
 import { DeepFlattenContainers } from '../types/helpers';
 
-interface Match<T, E, A, B> {
+
+type OptionMatcher<T, A, B> = {
   Some?: (_: T) => A;
   None?: () => B;
+};
+
+type ResultMatcher<T, E, A, B> = {
   Ok?: (_: T) => A;
   Err?: (_: E) => B;
-}
+};
 
 type Flatten<A, T extends Option<A> | Result<A, A>> = T extends
   | { _tag: 'Some' }
@@ -24,37 +27,65 @@ type Flatten<A, T extends Option<A> | Result<A, A>> = T extends
 // flatten f f a -> f a
 // flatten f f f a -> f a
 // (fail) flatten f m f a -> f a
+
 export const flatten = <A, F extends Option<A> | Result<A, A>>(
   t: F
 ): Flatten<A, F> => {
   switch (t._tag) {
     case 'Some':
+      //@ts-ignore
       return t.unwrap().hasOwnProperty('_tag') ? flatten(t.unwrap()) : t;
     case 'Ok':
+      //@ts-ignore
       return t.unwrap().hasOwnProperty('_tag') ? flatten(t.unwrap()) : t;
     case 'Err':
+      //@ts-ignore
       return Err(t?.value);
     default:
+      //@ts-ignore
       return t;
   }
 };
 
-export const match = <T, E, A, B>(t: Option<T> | Result<T, E>) => ({
-  Some: onSome,
-  None: onNone,
-  Ok: onOk,
-  Err: onErr,
-}: Match<T, E, A, B>): A | B | string => {
+
+/**
+ * The `match` function is a generic function that allows handling different cases of `Option` and `Result` types.
+ * It takes an input `t`, which can be either an `Option<T>` or a `Result<T, E>`, and a `matcher` object containing
+ * handler functions for each case: `Some`, `None`, `Ok`, and `Err`.
+ *
+ * @param t - The input `Option<T>` or `Result<T, E>` to be matched.
+ * @param matcher - An object containing handler functions for each case.
+ * @returns The result of executing the appropriate handler function or a default message if no handler is provided.
+ *
+ * @example
+ * import { Option, Some, None, Result, Ok, Err, match } from 'your-library';
+ *
+ * const option: Option<number> = Some(42);
+ * const result: Result<string, string> = Err('An error occurred');
+ *
+ * const optionOutput = match(option, {
+ *   Some: (value) => `Value: ${value}`,
+ *   None: () => 'No value',
+ * });
+ *
+ * const resultOutput = match(result, {
+ *   Ok: (value) => `Success: ${value}`,
+ *   Err: (error) => `Error: ${error}`,
+ * });
+ */
+export function match<T, A, B>(t: Option<T>, matcher: OptionMatcher<T, A, B>): A | B | string;
+export function match<T, E, A, B>(t: Result<T, E>, matcher: ResultMatcher<T, E, A, B>): A | B | string;
+export function match<T, E, A, B>(t: Option<T> | Result<T, E>, matcher: OptionMatcher<T, A, B> | ResultMatcher<T, E, A, B>): A | B | string {
   switch (t._tag) {
     case 'None':
-      return onNone?.() ?? 'No match defined for None';
+      return (matcher as OptionMatcher<T, A, B>).None?.() ?? 'No match defined for None';
     case 'Some':
-      return onSome?.(t.unwrap()) ?? 'No match defined for Some';
+      return (matcher as OptionMatcher<T, A, B>).Some?.(t.unwrap()) ?? 'No match defined for Some';
     case 'Ok':
-      return onOk?.(t.unwrap()) ?? 'No match defined for Ok';
+      return (matcher as ResultMatcher<T, E, A, B>).Ok?.(t.unwrap()) ?? 'No match defined for Ok';
     case 'Err':
-      return onErr?.(t.unwrapErr()) ?? 'No match defined for Err';
+      return (matcher as ResultMatcher<T, E, A, B>).Err?.(t.unwrapErr()) ?? 'No match defined for Err';
     default:
       return (Err('No pattern matched') as unknown) as B;
   }
-};
+}

@@ -75,7 +75,7 @@ export const Err = <T, E>(e: E): Err<T, E> => ({
   mapErr: <A>(fn: (_: E) => A): Result<T, A> => Err(fn(e)),
   andThen: <A>(_: (_: T) => Err<A, E>): Err<A, E> => Err(e),
   or: <A>(a: Result<A, E>): Result<A, E> => a,
-  orElse: <A>(fn: (_: E) => Result<A, E>): Result<T | A, E> => fn(e),
+  orElse: <A>(fn: (_: E) => Result<A, E>): Result<A, E> => fn(e),
   and<A>(_: Result<A, E>): Err<T | A, E> {
     return this;
   },

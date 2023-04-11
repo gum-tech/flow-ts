@@ -101,30 +101,17 @@ describe('Option', () => {
 
     it('match', () => {
       expect(
-        match(Some(1))({
+        match(Some(1),{
           Some: a => a,
           None: () => "It's a none",
         })
       ).toEqual(1);
       expect(
-        match(None)({
+        match(None, {
           Some: a => a,
           None: () => "It's a none",
         })
       ).toEqual("It's a none");
-      expect(
-        match(None)({
-          Ok: a => a,
-          Err: a => a,
-        })
-      ).toEqual('No match defined for None');
-
-      expect(
-        match(Some(1))({
-          Ok: a => a,
-          Err: a => a,
-        })
-      ).toEqual('No match defined for Some');
     });
   });
 
