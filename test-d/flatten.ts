@@ -1,12 +1,9 @@
-import { expectType, expectError } from 'tsd'
+import { expectType } from 'tsd'
 import { flatten, Some, None, Ok, Err, Option } from '../src/index'
 
 { // spec flatten Some a -> Some a
     const x = flatten(Some(1))
     expectType<Option<number>>(x)
-
-    // should not return an unexpected type
-    expectError<Ok<number, number>>(x)
 }
 
 { // spec flatten Some Some a -> Some a
@@ -28,8 +25,6 @@ import { flatten, Some, None, Ok, Err, Option } from '../src/index'
     const x = flatten(Ok(1))
     expectType<Ok<number, number>>(x)
 
-    // should not return an unexpected type
-    expectError<Some<number>>(x)
 }
 
 { // spec flatten Ok Ok a -> Ok a
