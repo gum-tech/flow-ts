@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/gum-tech/flow-ts/compare/v1.3.0...v1.4.0) (2023-04-11)
+
+
+### Features
+
+* Add equals function for Option and Result types ([6f98af6](https://github.com/gum-tech/flow-ts/commit/6f98af6320190c7ab265adf8be62df9b9950d481))
+
 ## [1.3.0](https://github.com/gum-tech/flow-ts/compare/v1.2.0...v1.3.0) (2022-12-23)
 
 
