@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/gum-tech/flow-ts/compare/v1.4.0...v1.5.0) (2023-04-13)
+
+
+### Features
+
+* **asyncresult:** integrate seamless handling of asynchronous operations with Result instances ([d6d83fe](https://github.com/gum-tech/flow-ts/commit/d6d83fe70ed2cdbdaa7e8e6c26206e6db6fb198f))
+
 ## [1.4.0](https://github.com/gum-tech/flow-ts/compare/v1.3.0...v1.4.0) (2023-04-11)
 
 
