@@ -38,8 +38,20 @@ Convinced?
 Great! Let’s get started.
 
 ## Installation
+
+Npm
 ```markdown
 > npm install @gum-tech/flow-ts
+```
+
+Yarn
+```markdown
+> yarn add @gum-tech/flow-ts
+```
+
+Deno
+```markdown
+> import { Some, None, Ok, Err, AsyncOk, AsyncErr } from 'https://deno.land/x/flowts/mod.ts'
 ```
 
 If you find this package useful, please click the star button *✨*!
