@@ -59,6 +59,12 @@ If you find this package useful, please click the star button *✨*!
     - [Benefits](#benefits-1)
     - [API](#api-1)
     - [API documentation](#api-documentation-1)
+- `AsyncResult<T,E>`
+    - [Introduction](#introduction-2)
+    - [Basic usage](#basic-usage-2)
+    - [Benefits](#benefits-2)
+    - [API](#api-2)
+    - [API documentation](#api-documentation-2)
 - Utils
     - [Flatten](#flatten)
     - [Pattern matching](#pattern-matching)
@@ -909,6 +915,187 @@ flow-ts Result exposes the following:
   ```
   [⬆️  Back to top](#toc)
 
+## AyncResult<T, E>
+
+### **Introduction**
+
+  `AsyncResult<T,E>` is a type that wraps a Promise of a `Result<T,E>` value. It combines the benefits of both Promise and Result types, making it easier to work with asynchronous operations that can return a success or an error value. AsyncResult provides a simple, composable, and type-safe way to handle errors and success values.
+
+  ```tsx
+  type AsyncResult<T, E> = Promise<Result<T, E>> & AsyncResultType<T, E>;
+  ```
+
+  [⬆️  Back to top](#toc)
+
+### **Basic usage**
+
+  Let’s start with a pratcial example
+
+  ```tsx
+  import axios from 'axios';
+  import { AsyncOk, AsyncErr, AsyncResult } from './async-result';
+
+  type APIResponse = {
+    numbers: number[];
+  };
+
+  type APIError = {
+    message: string;
+  };
+
+  async function fetchData(): AsyncResult<APIResponse, APIError> {
+    try {
+      const response = await axios.get<APIResponse>('https://api.example.com/numbers');
+      return AsyncOk(response.data);
+    } catch (error) {
+      return AsyncErr<APIResponse, APIError>({
+        message: 'Failed to fetch data from API',
+      });
+    }
+  }
+
+  async function calculateSum(apiResponse: APIResponse): number {
+    return apiResponse.numbers.reduce((sum, number) => sum + number, 0);
+  }
+
+  async function processDataAndCalculateSum() {
+    const asyncResult = await fetchData().andThen(calculateSum);
+
+    const output = match(asyncResult, {
+      Ok: (sum: number) => `Sum of numbers: ${sum}`,
+      Err: (error: APIError) => `Error: ${error.message}`,
+    });
+
+    console.log(output);
+
+    // Another option
+    // if (asyncResult.isOk()) {
+    //   console.log('Sum of numbers:', asyncResult.unwrap());
+    // } else {
+    //   console.error('Error:', asyncResult.unwrapErr());
+    // }
+  }
+
+  processDataAndCalculateSum();
+  ```
+
+
+  ```tsx
+
+  ```
+[⬆️  Back to top](#toc)
+
+### **Benefits**
+
+1. Composable: AsyncResult allows you to chain operations and transformations on the success or error values.
+2. Type-safe: With TypeScript, you'll get type-checking for both success and error values.
+3. Promotes cleaner code: AsyncResult helps you to write more functional and declarative code, reducing the need for explicit error handling and conditionals.
+
+[⬆️  Back to top](#toc)
+
+### **API**
+
+flow-ts Result exposes the following:
+
+- map(fn: (value: T) => A): Transforms the success value using the given function.
+- mapErr(fn: (error: E) => A): Transforms the error value using the given function.
+- andThen(fn: (value: T) => AsyncResult<A, E>): Chains a new asynchronous operation that depends on the success value.
+- then(onfulfilled?: (value: Result<T, E>) => TResult | PromiseLike<TResult>, onrejected?: (reason: any) => TResult | PromiseLike<TResult>): Allows you to use the standard Promise then method, returning a new Promise with the transformed value.
+
+[⬆️  Back to top](#toc)
+
+### **API Documentation**
+  `map` 
+
+  Transforms the success value of the AsyncResult using the given function. If the AsyncResult has an Err value, this operation will be a no-op.
+
+  **Example**
+
+  ```tsx
+  const asyncResult = AsyncOk<number, string>(3);
+
+  asyncResult.map((value) => value * 2).then((result) => {
+    if (result.isOk()) {
+      console.log(result.unwrap()); // Output: 6
+    }
+  });
+
+  ```
+
+  `mapErr` 
+
+  Transforms the error value of the AsyncResult using the given function. If the AsyncResult has an Ok value, this operation will be a no-op.
+
+  **Example**
+
+  ```tsx
+  const asyncResult = AsyncErr<number, string>('Error message');
+
+  asyncResult.mapErr((error) => `Transformed: ${error}`).then((result) => {
+    if (result.isErr()) {
+      console.log(result.unwrapErr()); // Output: Transformed: Error message
+    }
+  });
+
+  ```
+
+   `andThen` 
+
+  Chains a new asynchronous operation that depends on the success value of the AsyncResult. If the AsyncResult has an Err value, this operation will be a no-op.
+
+  **Example**
+
+  ```tsx
+  const asyncResult = AsyncOk<number, string>(3);
+
+  asyncResult.andThen((value) => AsyncOk(value * 2)).then((result) => {
+    if (result.isOk()) {
+      console.log(result.unwrap()); // Output: 6
+    }
+  });
+
+  ```
+
+   `then` 
+
+  Allows you to use the standard Promise then method, returning a new Promise with the transformed value. The onfulfilled function will be called with a Result value if the AsyncResult resolves successfully, and the onrejected function will be called with an error if the AsyncResult rejects.
+
+  **Example**
+
+  ```tsx
+  const asyncResult = AsyncOk<number, string>(3);
+
+  asyncResult.then(
+    (result) => {
+      if (result.isOk()) {
+        console.log(result.unwrap()); // Output: 3
+      }
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+  ```
+  `async/await` 
+  Yes, you can await an AsyncResult. Since AsyncResult is a Promise under the hood, you can use it with await within an async function. When you await an AsyncResult, it resolves to a Result<T,E> value, which you can then use with methods like isOk(), isErr(), unwrap(), unwrapErr(), etc.
+
+  ```tsx
+  async function example() {
+    const asyncResult = AsyncOk<number, string>(3);
+
+    try {
+      const result = await asyncResult;
+
+      if (result.isOk()) {
+        console.log(result.unwrap()); // Output: 3
+      } else {
+        console.error(result.unwrapErr());
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  ```
 
 ## Utils
 
