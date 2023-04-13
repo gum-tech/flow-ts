@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/gum-tech/flow-ts/compare/v1.5.0...v1.6.0) (2023-04-13)
+
+
+### Features
+
+* **deno:** Release for Deno ([f7b332d](https://github.com/gum-tech/flow-ts/commit/f7b332d9c52d209d547e1456875ae721b670be00))
+
 ## [1.5.0](https://github.com/gum-tech/flow-ts/compare/v1.4.0...v1.5.0) (2023-04-13)
 
 
