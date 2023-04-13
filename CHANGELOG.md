@@ -5,7 +5,7 @@
 
 ### Features
 
-* **deno:** update ReadMe to release Deno ([f7b332d](https://github.com/gum-tech/flow-ts/commit/f7b332d9c52d209d547e1456875ae721b670be00))
+* **deno:** Release for Deno ([f7b332d](https://github.com/gum-tech/flow-ts/commit/f7b332d9c52d209d547e1456875ae721b670be00))
 
 ## [1.5.0](https://github.com/gum-tech/flow-ts/compare/v1.4.0...v1.5.0) (2023-04-13)
 
