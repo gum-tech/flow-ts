@@ -6,7 +6,7 @@ Dominate exceptions and missing values in Typescript & Javascript.
 
 ## Why flow-ts?
 
-In JS, `null` represents intentionally missing values, `undefined` represents unintentional missing values, and Exceptions are used for handling errors.
+In TS, `null` represents intentionally missing values, `undefined` represents unintentional missing values, and Exceptions are used for handling errors.
 
 Rust skips using missing values and exceptions. Mainly to prevent issues and bugs like:
 
